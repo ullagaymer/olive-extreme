@@ -19,7 +19,7 @@ Please consider supporting Olive:
 [![Become a Patron](https://olivevideoeditor.org/img/become_a_patron_button.png)](https://www.patreon.com/olivevideoeditor)
 
 TODO list:
-- [ ] Change the olive's default ocio config to a newer version (mix between aces and blender) 
+- [x] Change the olive's default ocio config to a newer version (mix between aces and blender) 
 - [ ] Add and change codec's  
   - [ ] add libaom-av1 codec
     - [ ] add pixel formats: yuv420p yuv422p yuv444p gbrp yuv420p10le yuv422p10le yuv444p10le yuv420p12le yuv422p12le yuv444p12le gbrp10le gbrp12le gray gray10le gray12le
