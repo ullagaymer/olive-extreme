@@ -94,6 +94,7 @@ find_package(OpenImageIO 2.1.12 REQUIRED)
 list(APPEND OLIVE_LIBRARIES ${OIIO_LIBRARIES})
 list(APPEND OLIVE_INCLUDE_DIRS ${OIIO_INCLUDE_DIRS})
 
+
 # Link OpenEXR
 find_package(OpenEXR REQUIRED)
 list(APPEND OLIVE_LIBRARIES ${OPENEXR_LIBRARIES})
@@ -199,15 +200,19 @@ endif()
 list(APPEND OLIVE_INCLUDE_DIRS ${PORTAUDIO_INCLUDE_DIRS})
 list(APPEND OLIVE_LIBRARIES ${PORTAUDIO_LIBRARIES})
 
+
 # Optional: Link OpenTimelineIO
+set(OTIO_DEPS_INCLUDE_DIR "C:/Users/ulla/Documents/OpenTimelineIO/OpenTimelineIO/build/src/deps")
 find_package(OpenTimelineIO)
 if (OpenTimelineIO_FOUND)
   list(APPEND OLIVE_DEFINITIONS USE_OTIO)
-  list(APPEND OLIVE_INCLUDE_DIRS ${OTIO_INCLUDE_DIRS})
+  list(APPEND OLIVE_INCLUDE_DIRS ${OTIO_INCLUDE_DIRS} ${OTIO_DEPS_INCLUDE_DIR})
   list(APPEND OLIVE_LIBRARIES ${OTIO_LIBRARIES})
 else()
   message("   OpenTimelineIO interchange will be disabled.")
 endif()
+
+
 
 # Optional: Link Google Crashpad
 find_package(GoogleCrashpad)
