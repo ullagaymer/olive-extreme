@@ -68,6 +68,8 @@ QString ExportCodec::GetCodecName(ExportCodec::Codec c)
     return tr("AV1");
   case kCodecSRT:
     return tr("SubRip SRT");
+  case kCodecASS:
+    return tr("ASS Subtitle");
   case kCodecCount:
     break;
   }
@@ -94,6 +96,8 @@ bool ExportCodec::IsCodecAStillImage(ExportCodec::Codec c)
   case kCodecVP9:
   case kCodecAV1:
   case kCodecSRT:
+    return false;
+  case kCodecASS:
     return false;
   case kCodecOpenEXR:
   case kCodecPNG:
@@ -126,6 +130,7 @@ bool ExportCodec::IsCodecLossless(Codec c)
   case kCodecVP9:
   case kCodecAV1:
   case kCodecSRT:
+  case kCodecASS:
   case kCodecOpenEXR:
   case kCodecPNG:
   case kCodecTIFF:

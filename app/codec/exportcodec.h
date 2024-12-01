@@ -54,6 +54,7 @@ public:
     kCodecFLAC,
     kCodecSRT,
     kCodecAV1,
+    kCodecASS,
 
     kCodecCount
   };

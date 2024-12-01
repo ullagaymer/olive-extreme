@@ -22,6 +22,8 @@
 
 #include <QGridLayout>
 #include <QLabel>
+#include <QcomboBox>
+#include <QinputDialog>
 
 #include "core.h"
 
@@ -51,6 +53,8 @@ ExportAudioTab::ExportAudioTab(QWidget* parent) :
   layout->addWidget(new QLabel(tr("Sample Rate:")), row, 0);
 
   sample_rate_combobox_ = new SampleRateComboBox();
+  connect(sample_rate_combobox_, QOverload<int>::of(&QComboBox::currentIndexChanged), 
+      sample_rate_combobox_, &SampleRateComboBox::OnCustomSampleRateSelected);
   layout->addWidget(sample_rate_combobox_, row, 1);
 
   row++;
@@ -93,11 +97,24 @@ int ExportAudioTab::SetFormat(ExportFormat::Format format)
   codec_combobox_->blockSignals(false);
   fmt_ = format;
 
+  UpdateSampleRates();
   UpdateSampleFormats();
   UpdateBitRateEnabled();
 
   return acodecs.size();
 }
+void ExportAudioTab::UpdateSampleRates()
+{ 
+    auto supported_sample_rates = ExportFormat::GetSampleRatesForCodec(fmt_, GetCodec());
+
+    sample_rate_combox_->clear();
+    foreach (int rate, supported_sample_rates) {
+      sample_rate_combobox_->addItem(HumanStrings::SampleRateToString(rate), rate);
+    }
+
+}
+
+
 
 void ExportAudioTab::UpdateSampleFormats()
 {

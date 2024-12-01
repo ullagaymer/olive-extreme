@@ -36,10 +36,12 @@ class SampleRateComboBox : public QComboBox
 public:
   SampleRateComboBox(QWidget* parent = nullptr) :
     QComboBox(parent)
-  {
+  { //add the predefined sample rates from AudioParams
     foreach (int sr, AudioParams::kSupportedSampleRates) {
       this->addItem(HumanStrings::SampleRateToString(sr), sr);
     }
+    //add "custom" option at the end
+    this->addItem(tr("Custom"), -1); // -1 will indicate custom selection
   }
 
   int GetSampleRate() const
@@ -56,7 +58,18 @@ public:
       }
     }
   }
-
+ public slots:
+     void OnCustomSampleRateSelected()
+     { 
+         if (GetSampleRate() == -1) { // Check if custom is selected
+            bool ok;
+            int customRate = QInputDialog::getInt(this, tr("Custom Sample Rate"), 
+               tr("Enter sample rate in Hz:"), 0, 0, 768000, 1, &ok); // Max 768000 Hz
+            if (ok) {
+           SetSampleRate(customRate);
+            }
+         }
+     }
 };
 
 }
