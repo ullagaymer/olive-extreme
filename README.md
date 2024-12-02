@@ -20,6 +20,9 @@ Please consider supporting Olive:
 
 TODO list:
 - [x] Change the olive's default ocio config to a newer version (mix between aces and blender) 
+- [ ] add more Hz (176400, 192000, 352800, 384000, 705600, 768000) options
+    - [ ] in code
+    - [ ] in menu
 - [ ] Add and change codec's  
   - [ ] add libaom-av1 codec
     - [ ] add pixel formats: yuv420p yuv422p yuv444p gbrp yuv420p10le yuv422p10le yuv444p10le yuv420p12le yuv422p12le yuv444p12le gbrp10le gbrp12le gray gray10le gray12le
