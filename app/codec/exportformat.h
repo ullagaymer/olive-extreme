@@ -62,6 +62,7 @@ public:
 
   static QStringList GetPixelFormatsForCodec(Format f, ExportCodec::Codec c);
   static std::vector<SampleFormat> GetSampleFormatsForCodec(Format f, ExportCodec::Codec c);
+  static QList<int> GetSampleRatesForCodec(Format f, ExportCodec::Codec c); // Added function declaration
 
 };
 

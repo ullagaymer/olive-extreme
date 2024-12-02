@@ -20,20 +20,21 @@
 
 #include "exportaudiotab.h"
 
+#include <QComboBox>
 #include <QGridLayout>
+#include <QInputDialog>
 #include <QLabel>
-#include <QcomboBox>
-#include <QinputDialog>
 
+#include "C:/Users/ulla/source/repos/olive-extreme/app/codec/exportcodec.h"
+#include "C:/Users/ulla/source/repos/olive-extreme/app/codec/exportformat.h"
+#include "C:/Users/ulla/source/repos/olive-extreme/app/ui/humanstrings.h"
 #include "core.h"
 
 namespace olive {
 
 const int ExportAudioTab::kDefaultBitRate = 320;
 
-ExportAudioTab::ExportAudioTab(QWidget* parent) :
-  QWidget(parent)
-{
+ExportAudioTab::ExportAudioTab(QWidget* parent) : QWidget(parent) {
   QVBoxLayout* outer_layout = new QVBoxLayout(this);
 
   QGridLayout* layout = new QGridLayout();
@@ -44,8 +45,10 @@ ExportAudioTab::ExportAudioTab(QWidget* parent) :
   layout->addWidget(new QLabel(tr("Codec:")), row, 0);
 
   codec_combobox_ = new QComboBox();
-  connect(codec_combobox_, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ExportAudioTab::UpdateSampleFormats);
-  connect(codec_combobox_, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ExportAudioTab::UpdateBitRateEnabled);
+  connect(codec_combobox_, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
+          &ExportAudioTab::UpdateSampleFormats);
+  connect(codec_combobox_, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
+          &ExportAudioTab::UpdateBitRateEnabled);
   layout->addWidget(codec_combobox_, row, 1);
 
   row++;
@@ -53,8 +56,8 @@ ExportAudioTab::ExportAudioTab(QWidget* parent) :
   layout->addWidget(new QLabel(tr("Sample Rate:")), row, 0);
 
   sample_rate_combobox_ = new SampleRateComboBox();
-  connect(sample_rate_combobox_, QOverload<int>::of(&QComboBox::currentIndexChanged), 
-      sample_rate_combobox_, &SampleRateComboBox::OnCustomSampleRateSelected);
+  connect(sample_rate_combobox_, QOverload<int>::of(&QComboBox::currentIndexChanged), sample_rate_combobox_,
+          &SampleRateComboBox::OnCustomSampleRateSelected);
   layout->addWidget(sample_rate_combobox_, row, 1);
 
   row++;
@@ -85,8 +88,7 @@ ExportAudioTab::ExportAudioTab(QWidget* parent) :
   outer_layout->addStretch();
 }
 
-int ExportAudioTab::SetFormat(ExportFormat::Format format)
-{
+int ExportAudioTab::SetFormat(ExportFormat::Format format) {
   QList<ExportCodec::Codec> acodecs = ExportFormat::GetAudioCodecs(format);
   setEnabled(!acodecs.isEmpty());
   codec_combobox_->blockSignals(true);
@@ -103,35 +105,34 @@ int ExportAudioTab::SetFormat(ExportFormat::Format format)
 
   return acodecs.size();
 }
-void ExportAudioTab::UpdateSampleRates()
-{ 
-    auto supported_sample_rates = ExportFormat::GetSampleRatesForCodec(fmt_, GetCodec());
 
-    sample_rate_combox_->clear();
-    foreach (int rate, supported_sample_rates) {
-      sample_rate_combobox_->addItem(HumanStrings::SampleRateToString(rate), rate);
-    }
-
+ExportCodec::Codec ExportAudioTab::GetCodec() const {
+  return static_cast<ExportCodec::Codec>(codec_combobox_->currentData().toInt());
 }
 
+void ExportAudioTab::UpdateSampleRates() {
+  auto supported_sample_rates = ExportFormat::GetSampleRatesForCodec(fmt_, GetCodec());
 
+  sample_rate_combobox_->clear();
+  foreach (int rate, supported_sample_rates) {
+    sample_rate_combobox_->addItem(HumanStrings::SampleRateToString(rate), rate);
+  }
+}
 
-void ExportAudioTab::UpdateSampleFormats()
-{
+void ExportAudioTab::UpdateSampleFormats() {
   auto fmts = ExportFormat::GetSampleFormatsForCodec(fmt_, GetCodec());
   sample_format_combobox_->SetAvailableFormats(fmts);
 }
 
-void ExportAudioTab::UpdateBitRateEnabled()
-{
+void ExportAudioTab::UpdateBitRateEnabled() {
   bool uses_bitrate = !ExportCodec::IsCodecLossless(GetCodec());
   bit_rate_slider_->setEnabled(uses_bitrate);
 
   if (!uses_bitrate) {
     bit_rate_slider_->SetTristate();
   } else {
-    bit_rate_slider_->SetValue(kDefaultBitRate  );
+    bit_rate_slider_->SetValue(kDefaultBitRate);
   }
 }
 
-}
+}  // namespace olive
